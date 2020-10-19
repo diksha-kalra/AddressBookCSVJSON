@@ -1,5 +1,6 @@
 package com.addressbook.opencsv.gson;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
@@ -7,8 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.google.gson.Gson;
 
@@ -32,15 +31,20 @@ public class addressBookJSONFile {
 				"kalradiksha109@gmail.com"));
 		listOfContacts.add(new PersonInfo("kavita", "mehta", "Pamposh Enclave", "Delhi", "Delhi", "110017",
 				"9899121213", "kavita@gmail.com"));
-		new Gson().toJson(listOfContacts, writer);
+		listOfContacts.add(
+				new PersonInfo("asfar", "hussain", "chitrol", "pak", "pak", "546868", "9899123412", "asfar@gmail.com"));
+		Gson gson = new Gson();
+		String json = gson.toJson(listOfContacts);
+		writer.write(json);
 		writer.close();
 	}
 
 	private void readDataFromJSON() throws IOException, ParseException {
-		FileReader reader = new FileReader(jsonFile);
-		JSONParser jsonParser = new JSONParser();
-		Object obj = jsonParser.parse(reader);
-		JSONArray listOfContacts = (JSONArray) obj;
-		System.out.println(listOfContacts);
+		BufferedReader br = new BufferedReader(new FileReader(jsonFile));
+		Gson gson = new Gson();
+		PersonInfo[] personInfoArray = gson.fromJson(br, PersonInfo[].class);
+		for (PersonInfo p : personInfoArray) {
+			System.out.println(p);
+		}
 	}
 }
