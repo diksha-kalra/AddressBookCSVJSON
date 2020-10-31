@@ -2,11 +2,13 @@ package com.addressbook.opencsv.gson;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
 
 	private List<PersonInfo> contactList;
 	private AddressBookDBService addressBookDBService;
+	private Map<String, Integer> contactByCity;
 
 	public AddressBookService(List<PersonInfo> contactList) {
 		this();
@@ -43,5 +45,10 @@ public class AddressBookService {
 	public List<PersonInfo> readContactDataForDateRange(LocalDate startDate, LocalDate endDate) {
 		this.contactList = addressBookDBService.getContactForDateRange(startDate, endDate);
 		return contactList;
+	}
+
+	public Map<String, Integer> readContactByCityOrState() {
+		this.contactByCity=addressBookDBService.getContactByCity();
+		return contactByCity;
 	}
 }
