@@ -1,35 +1,45 @@
 package com.addressbook.opencsv.gson;
 
 public class PersonInfo {
-
-	public String first_name;
-	public String last_name;
+	public String firstName;
+	public String lastName;
 	public String address;
 	public String city;
 	public String state;
 	public String zip;
-	public String phone_no;
+	public String phoneNo;
 	public String email;
+	public String addressBookName;
+	public String addressBookType;
 
-	public PersonInfo(String first_name, String last_name, String address, String city, String state, String zip,
-			String phone_no, String email) {
+	public PersonInfo(String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNo, String email) {
 		super();
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.address = address;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
-		this.phone_no = phone_no;
+		this.phoneNo = phoneNo;
 		this.email = email;
+	}
+
+	public PersonInfo(String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNo, String email, String addressBookName, String addressBookType) {
+		this(firstName, lastName, address, city, state, zip, phoneNo, email);
+		this.addressBookName = addressBookName;
+		this.addressBookType = addressBookType;
 	}
 
 	public PersonInfo() {
 	}
 
+	@Override
 	public String toString() {
-		return "First Name: " + this.first_name + " Last Name: " + this.last_name + " Address: " + this.address
+		return "First Name: " + this.firstName + " Last Name: " + this.lastName + " Address: " + this.address
 				+ " City: " + this.city + " State: " + this.state + " Zip: " + this.zip + " Phone Number: "
-				+ this.phone_no + " Email: " + this.email;
+				+ this.phoneNo + " Email: " + this.email + " Address book name" + this.addressBookName + " type"
+				+ addressBookType;
 	}
 }
