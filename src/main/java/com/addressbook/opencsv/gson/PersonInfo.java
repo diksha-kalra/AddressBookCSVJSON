@@ -1,5 +1,7 @@
 package com.addressbook.opencsv.gson;
 
+import java.time.LocalDate;
+
 public class PersonInfo {
 	public String firstName;
 	public String lastName;
@@ -11,6 +13,7 @@ public class PersonInfo {
 	public String email;
 	public String addressBookName;
 	public String addressBookType;
+	public LocalDate date;
 
 	public PersonInfo(String firstName, String lastName, String address, String city, String state, String zip,
 			String phoneNo, String email) {
@@ -30,6 +33,12 @@ public class PersonInfo {
 		this(firstName, lastName, address, city, state, zip, phoneNo, email);
 		this.addressBookName = addressBookName;
 		this.addressBookType = addressBookType;
+	}
+
+	public PersonInfo(String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNo, String email, String addressBookName, String addressBookType, LocalDate date) {
+		this(firstName, lastName, address, city, state, zip, phoneNo, email, addressBookName, addressBookType);
+		this.date = date;
 	}
 
 	public PersonInfo() {

@@ -19,7 +19,7 @@ public class AddressBookDBService {
 		return addressBookDBService;
 	}
 
-	public Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws SQLException {
 		String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service?useSSL=false";
 		String userName = "root";
 		String password = "Ikdn@1234";
@@ -40,7 +40,7 @@ public class AddressBookDBService {
 
 	private List<PersonInfo> getContactDetailsUsingSqlQuery(String sql) {
 		List<PersonInfo> ContactList = null;
-		try (Connection connection = addressBookDBService.getConnection();) {
+		try (Connection connection = AddressBookDBService.getConnection();) {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			ResultSet result = preparedStatement.executeQuery(sql);
 			ContactList = this.getAddressBookData(result);
@@ -78,7 +78,7 @@ public class AddressBookDBService {
 	}
 
 	private int updateContactDataUsingPreparedStatement(String first_name, String address) {
-		try (Connection connection = addressBookDBService.getConnection();) {
+		try (Connection connection = AddressBookDBService.getConnection();) {
 			String sql = "update contact_details set address=? where first_name=?";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, address);
@@ -107,7 +107,7 @@ public class AddressBookDBService {
 
 	private void prepareStatementForContactData() {
 		try {
-			Connection connection = addressBookDBService.getConnection();
+			Connection connection = AddressBookDBService.getConnection();
 			String sql = "SELECT c.first_name, c.last_name,c.address_book_name,c.address,c.city,"
 					+ "c.state,c.zip,c.phone_number,c.email,abd.address_book_type "
 					+ " from contact_details c inner join address_book_dict abd "
@@ -131,7 +131,7 @@ public class AddressBookDBService {
 	public Map<String, Integer> getContactByCity() {
 		String sql = "SELECT city, count(first_name) as count from contact_details group by city; ";
 		Map<String, Integer> contactByCityMap = new HashMap<>();
-		try (Connection connection = addressBookDBService.getConnection()) {
+		try (Connection connection = AddressBookDBService.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
 			while (result.next()) {
