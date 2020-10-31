@@ -1,5 +1,6 @@
 package com.addressbook.opencsv.gson;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookService {
@@ -37,5 +38,10 @@ public class AddressBookService {
 	public boolean checkConatctDetailsInSyncWithDB(String name) {
 		List<PersonInfo> contactList = addressBookDBService.getcontactData(name);
 		return contactList.get(0).equals(getContactData(name));
+	}
+
+	public List<PersonInfo> readContactDataForDateRange(LocalDate startDate, LocalDate endDate) {
+		this.contactList = addressBookDBService.getContactForDateRange(startDate, endDate);
+		return contactList;
 	}
 }

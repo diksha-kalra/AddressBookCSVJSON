@@ -1,12 +1,9 @@
 package com.addressbook.opencsv.gson;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.*;
 
 public class AddressBookDBService {
 	private PreparedStatement ContactDataStatement;
@@ -75,7 +72,7 @@ public class AddressBookDBService {
 		}
 		return contactList;
 	}
-	
+
 	public int updateEmployeeData(String name, String address) {
 		return this.updateContactDataUsingPreparedStatement(name, address);
 	}
@@ -107,7 +104,7 @@ public class AddressBookDBService {
 		}
 		return contactList;
 	}
-	
+
 	private void prepareStatementForContactData() {
 		try {
 			Connection connection = addressBookDBService.getConnection();
@@ -119,5 +116,15 @@ public class AddressBookDBService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<PersonInfo> getContactForDateRange(LocalDate startDate, LocalDate endDate) {
+		String sql = String.format(
+				"SELECT c.first_name, c.last_name,c.address_book_name,c.address,c.city,"
+						+ "c.state,c.zip,c.phone_number,c.email,abd.address_book_type "
+						+ "from contact_details c inner join address_book_dict abd "
+						+ "on c.address_book_name=abd.address_book_name where date_added between '%s' AND '%s'; ",
+				Date.valueOf(startDate), Date.valueOf(endDate));
+		return this.getContactDetailsUsingSqlQuery(sql);
 	}
 }
