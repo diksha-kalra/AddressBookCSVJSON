@@ -1,11 +1,13 @@
 package com.addressbook.opencsv.gson;
 
 import java.sql.*;
+import java.util.logging.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
 public class AddressBookDBService {
+	private static Logger log = Logger.getLogger(AddressBookDBService.class.getName());
 	private PreparedStatement ContactDataStatement;
 	private static AddressBookDBService addressBookDBService;
 
@@ -24,9 +26,9 @@ public class AddressBookDBService {
 		String userName = "root";
 		String password = "Ikdn@1234";
 		Connection connection;
-		System.out.println("connecting to database: " + jdbcURL);
+		log.info("connecting to database: " + jdbcURL);
 		connection = DriverManager.getConnection(jdbcURL, userName, password);
-		System.out.println("connection successful !!!! " + connection);
+		log.info("connection successful !!!! " + connection);
 		return connection;
 	}
 
