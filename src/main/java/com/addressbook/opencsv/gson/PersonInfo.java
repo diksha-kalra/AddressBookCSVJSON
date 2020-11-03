@@ -15,6 +15,7 @@ public class PersonInfo {
 	public String addressBookName;
 	public String addressBookType;
 	public LocalDate date;
+	public int id;
 
 	public PersonInfo(String firstName, String lastName, String address, String city, String state, String zip,
 			String phoneNo, String email) {
@@ -41,7 +42,13 @@ public class PersonInfo {
 		this(firstName, lastName, address, city, state, zip, phoneNo, email, addressBookName, addressBookType);
 		this.date = date;
 	}
-
+	
+	public PersonInfo(int id,String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNo, String email, String addressBookName, String addressBookType, LocalDate date) {
+		this(firstName, lastName, address, city, state, zip, phoneNo, email, addressBookName, addressBookType,date);
+		this.id = id;
+	}
+	
 	public PersonInfo() {
 	}
 

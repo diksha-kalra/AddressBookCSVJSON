@@ -69,6 +69,7 @@ public class AddressBookDBService {
 				contactList.add(new PersonInfo(firstName, lastName, address, city, state, zip, phoneNumber, email,
 						addressBookName, addressBookType));
 			}
+			System.out.println(contactList.size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

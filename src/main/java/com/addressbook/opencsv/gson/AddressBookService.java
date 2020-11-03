@@ -1,6 +1,7 @@
 package com.addressbook.opencsv.gson;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class AddressBookService {
 
 	public AddressBookService(List<PersonInfo> contactList) {
 		this();
-		this.contactList = contactList;
+		this.contactList = new ArrayList<>(contactList);
 	}
 
 	public AddressBookService() {
@@ -80,10 +81,18 @@ public class AddressBookService {
 		});
 		while (employeeAdditionStatus.containsValue(false)) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100000);
 			} catch (InterruptedException e) {
 			}
 		}
 		log.info("" + this.contactList);
+	}
+
+	public void addContactToAddressBook(PersonInfo personInfo) {
+		contactList.add(personInfo);
+	}
+
+	public long countEntries() {
+		return contactList.size();
 	}
 }
