@@ -1,5 +1,6 @@
 package com.addressbook.opencsv.gson;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,10 @@ public class AddressBookService {
 	private AddressBookDBServiceNew addressBookDBServiceNew;
 	private Map<String, Integer> contactByCity;
 
+	public enum IOService {
+		FILE_IO, DB_IO, REST_IO
+	}
+
 	public AddressBookService(List<PersonInfo> contactList) {
 		this();
 		this.contactList = new ArrayList<>(contactList);
@@ -24,9 +29,16 @@ public class AddressBookService {
 		addressBookDBServiceNew = AddressBookDBServiceNew.getInstance();
 	}
 
-	public List<PersonInfo> readContactData() {
-		this.contactList = addressBookDBService.readData();
-		return contactList;
+	public List<PersonInfo> readContactData(IOService ioService) {
+		if (ioService.equals(IOService.FILE_IO)) {
+			this.contactList = (List<PersonInfo>) new AddressBookFileIO().readData();
+			return contactList;
+		}
+		if (ioService.equals(IOService.DB_IO)) {
+			this.contactList = addressBookDBService.readData();
+			return contactList;
+		}
+		return null;
 	}
 
 	public void updateContactDetails(String name, String address) {
@@ -57,6 +69,14 @@ public class AddressBookService {
 		return contactByCity;
 	}
 
+	public void addContactToDB(List<PersonInfo> contactDataList) {
+		contactDataList.forEach(personInfo -> {
+			this.addContactToAddressBook(personInfo.firstName, personInfo.lastName, personInfo.address, personInfo.city,
+					personInfo.state, personInfo.zip, personInfo.phoneNo, personInfo.email, personInfo.addressBookName,
+					personInfo.addressBookType, personInfo.date);
+		});
+	}
+
 	public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state,
 			String zip, String phoneNumber, String email, String addressBookName, String addressBookType,
 			LocalDate date) {
@@ -64,26 +84,25 @@ public class AddressBookService {
 				email, addressBookName, addressBookType, date));
 	}
 
-	public void addEmployeeToPayrollWithThreads(List<PersonInfo> contactList) {
-		Map<Integer, Boolean> employeeAdditionStatus = new HashMap<>();
-		contactList.forEach(personInfo -> {
+	public void addContactsWithThreads(List<PersonInfo> contactDataList) {
+		Map<Integer, Boolean> contactAdditionStatus = new HashMap<>();
+		contactDataList.forEach(personInfo -> {
 			Runnable task = () -> {
-				employeeAdditionStatus.put(personInfo.hashCode(), false);
+				contactAdditionStatus.put(personInfo.hashCode(), false);
 				log.info("Contact being added : " + Thread.currentThread().getName());
 				this.addContactToAddressBook(personInfo.firstName, personInfo.lastName, personInfo.address,
 						personInfo.city, personInfo.state, personInfo.zip, personInfo.phoneNo, personInfo.email,
 						personInfo.addressBookName, personInfo.addressBookType, personInfo.date);
-				employeeAdditionStatus.put(personInfo.hashCode(), true);
+				contactAdditionStatus.put(personInfo.hashCode(), true);
 				log.info("Contact added : " + Thread.currentThread().getName());
 			};
 			Thread thread = new Thread(task, personInfo.firstName);
 			thread.start();
 		});
-		while (employeeAdditionStatus.containsValue(false)) {
+		while (contactAdditionStatus.containsValue(false)) {
 			try {
 				Thread.sleep(100000);
-			} catch (InterruptedException e) {
-			}
+			} catch (InterruptedException e) {}
 		}
 		log.info("" + this.contactList);
 	}
@@ -97,7 +116,17 @@ public class AddressBookService {
 	}
 
 	public void deleteContact(String firstName) {
-		PersonInfo personInfo=this.getContactData(firstName);
+		PersonInfo personInfo = this.getContactData(firstName);
 		contactList.remove(personInfo);
+	}
+
+	public void writeAddressBookData(IOService ioService) {
+		if (ioService.equals(IOService.FILE_IO)) {
+			try {
+				new AddressBookFileIO().writeDataFileIO(contactList);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

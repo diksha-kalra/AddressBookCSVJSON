@@ -33,9 +33,7 @@ public class AddressBookDBServiceNew {
 			String sql = String.format(
 					"INSERT INTO address_book_dict (address_book_name,address_book_type) VALUES('%s','%s')",
 					addressBookName, addressBookType);
-			int rowAffected = statement.executeUpdate(sql);
-			if (rowAffected == 0)
-				throw new SQLException();
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			System.out.println(e + "cannot insert into address_book");
 			try {
@@ -50,11 +48,10 @@ public class AddressBookDBServiceNew {
 							+ "phone_number,email,date_added) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 					firstName, lastName, addressBookName, address, city, state, zip, phoneNumber, email, date);
 			int rowAffected = statement.executeUpdate(sql);
-			if (rowAffected == 0)
-				throw new SQLException();
-			if (rowAffected == 1)
+			if (rowAffected == 1) {
 				personInfo = new PersonInfo(firstName, lastName, address, city, state, zip, phoneNumber, email,
 						addressBookName, addressBookType, date);
+			}
 		} catch (SQLException e) {
 			System.out.println(e + "cannot insert into contact details");
 			try {
