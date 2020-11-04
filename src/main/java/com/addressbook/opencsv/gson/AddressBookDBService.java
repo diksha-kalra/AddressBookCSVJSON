@@ -76,7 +76,7 @@ public class AddressBookDBService {
 		return contactList;
 	}
 
-	public int updateEmployeeData(String name, String address) {
+	public int updateContactData(String name, String address) {
 		return this.updateContactDataUsingPreparedStatement(name, address);
 	}
 

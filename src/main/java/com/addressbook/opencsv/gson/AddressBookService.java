@@ -30,7 +30,7 @@ public class AddressBookService {
 	}
 
 	public void updateContactDetails(String name, String address) {
-		int result = addressBookDBService.updateEmployeeData(name, address);
+		int result = addressBookDBService.updateContactData(name, address);
 		if (result == 0)
 			return;
 		PersonInfo personInfo = this.getContactData(name);
@@ -38,7 +38,7 @@ public class AddressBookService {
 			personInfo.address = address;
 	}
 
-	private PersonInfo getContactData(String name) {
+	public PersonInfo getContactData(String name) {
 		return this.contactList.stream().filter(contact -> contact.firstName.equals(name)).findFirst().orElse(null);
 	}
 
