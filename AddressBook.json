@@ -1,24 +1,6 @@
 {
   "contacts": [
     {
-      "id": 1,
-      "firstName": "Deepali",
-      "lastName": "Garg",
-      "address": "Rohini",
-      "city": "Delhi",
-      "state": "Delhi",
-      "zip": "110081",
-      "phoneNo": "9899676767",
-      "email": "deepali@gmail.com",
-      "addressBookName": "mycontacts",
-      "addressBookType": "family",
-      "date": {
-        "year": 2020,
-        "month": 10,
-        "day": 1
-      }
-    },
-    {
       "firstName": "naman",
       "lastName": "kalra",
       "address": "pamposh enclave",

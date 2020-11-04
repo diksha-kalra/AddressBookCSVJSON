@@ -95,4 +95,9 @@ public class AddressBookService {
 	public long countEntries() {
 		return contactList.size();
 	}
+
+	public void deleteContact(String firstName) {
+		PersonInfo personInfo=this.getContactData(firstName);
+		contactList.remove(personInfo);
+	}
 }

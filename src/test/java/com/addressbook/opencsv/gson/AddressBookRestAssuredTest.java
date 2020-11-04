@@ -39,7 +39,7 @@ public class AddressBookRestAssuredTest {
 	}
 
 	@Test
-	public void givenEmployeeDataInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
+	public void givenContactDataInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
 		PersonInfo[] arrayOfContacts = getContactList();
 		AddressBookService addressBookService;
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
@@ -48,7 +48,7 @@ public class AddressBookRestAssuredTest {
 	}
 
 	@Test
-	public void givenNewContact_WhenAdded__ShouldMatch() {
+	public void givenContact_WhenAdded__ShouldMatch() {
 		AddressBookService addressBookService;
 		PersonInfo[] arrayOfContacts = getContactList();
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
@@ -65,7 +65,7 @@ public class AddressBookRestAssuredTest {
 	}
 
 	@Test
-	public void givenNewListOfContacts_WhenAdded_ShouldMatch() {
+	public void givenNewContactArray_WhenAdded_ShouldMatch() {
 		AddressBookService addressBookService;
 		PersonInfo[] arrayOfContacts = getContactList();
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
@@ -99,5 +99,21 @@ public class AddressBookRestAssuredTest {
 		Response response = request.put("/contacts/" + personInfo.id);
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
+	}
+	
+	@Test
+	public void givenNewContactName_WhenRemoved_ShouldMatch200ResponseAndCount() {
+		AddressBookService addressBookService;
+		PersonInfo[] arrayOfContacts = getContactList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		PersonInfo personInfo = addressBookService.getContactData("Deepali");
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/contacts/" + personInfo.id);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+		addressBookService.deleteContact(personInfo.firstName);
+		long entries = addressBookService.countEntries();
+		Assert.assertEquals(3, entries);
 	}
 }
