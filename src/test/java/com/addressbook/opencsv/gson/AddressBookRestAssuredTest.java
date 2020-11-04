@@ -19,7 +19,7 @@ public class AddressBookRestAssuredTest {
 		RestAssured.port = 3000;
 	}
 	
-	public PersonInfo[] getEmployeeList() {
+	public PersonInfo[] getContactList() {
 		Response response = RestAssured.get("/contacts");
 		log.info("Contacts entries in JSON Server :\n" + response.asString());
 		PersonInfo[] arrayOfContacts = new Gson().fromJson(response.asString(), PersonInfo[].class);
@@ -37,7 +37,7 @@ public class AddressBookRestAssuredTest {
 	@Test
 	public void givenNewContact_WhenAdded__ShouldMatch(){
 		AddressBookService addressBookService;
-		PersonInfo[] arrayOfContacts = getEmployeeList();
+		PersonInfo[] arrayOfContacts = getContactList();
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
 		PersonInfo personInfo = null;
 		personInfo = new PersonInfo("naman","kalra","delhi","delhi","delhi","110019","9899787878","naman@gmail.com","contacts","family",LocalDate.now());
@@ -52,7 +52,7 @@ public class AddressBookRestAssuredTest {
 	
 	@Test
 	public void givenEmployeeDataInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
-		PersonInfo[] arrayOfContacts = getEmployeeList();
+		PersonInfo[] arrayOfContacts = getContactList();
 		AddressBookService addressBookService;
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
 		long entries = addressBookService.countEntries();
